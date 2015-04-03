@@ -18,37 +18,52 @@ $(function() {
                 firstName = name.split(' ').slice(0, -1).join(' ');
             }
             $.ajax({
-                url: "././mail/contact_me.php",
+                url: "https://mandrillapp.com/api/1.0/messages/send.json",
                 type: "POST",
                 data: {
-                    name: name,
-                    phone: phone,
-                    email: email,
-                    message: message
+                    key: 'LwGP0XIT5M-ouqe5CPrv8Q',
+                    message: {
+                        from_email: email,
+                        to: [
+                          {
+                            email: 'akich@akich.ru',
+                            type: 'to'
+                          }
+                        ],
+                        autotext: 'true',
+                        subject: 'Новое сообщение с akich.ru: ' + name + ' ' + phone ,
+                        html: message
+                    }
+                    // name: name,
+                    // phone: phone,
+                    // email: email,
+                    // message: message
                 },
                 cache: false,
-                success: function() {
+                success: function(resp) {
                     // Success message
-                    $('#success').html("<div class='alert alert-success'>");
+                    $('#success').html("<div class='alert alert-success alert-green'>");
                     $('#success > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
                         .append("</button>");
                     $('#success > .alert-success')
-                        .append("<strong>Your message has been sent. </strong>");
+                        .append("<strong>Ваше сообщение успешно отправлено. </strong>");
                     $('#success > .alert-success')
                         .append('</div>');
 
                     //clear all fields
                     $('#contactForm').trigger("reset");
+                    console.log(resp);
                 },
-                error: function() {
+                error: function(resp) {
                     // Fail message
                     $('#success').html("<div class='alert alert-danger'>");
                     $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
                         .append("</button>");
-                    $('#success > .alert-danger').append("<strong>Sorry " + firstName + ", it seems that my mail server is not responding. Please try again later!");
+                    $('#success > .alert-danger').append("<strong>Извените, " + firstName + ", похоже почтовый сервер не отвечает. Попробуйте позже.");
                     $('#success > .alert-danger').append('</div>');
                     //clear all fields
                     $('#contactForm').trigger("reset");
+                    console.log(resp);
                 },
             })
         },

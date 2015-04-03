@@ -24,6 +24,10 @@
     border-color: #28675c;
 }
 
+.alert-green {
+    background-color: #28675c !important;
+}
+
 .btn-snd:hover {
     color: #fe9e88;
 }
